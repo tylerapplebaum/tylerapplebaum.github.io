@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>tylerapplebaum.ps1</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="tylerapplebaum.ps1">
+    <meta name="author" content="Tyler Applebaum">
+
+    <!-- styles -->
+	<link rel="stylesheet" type="text/css" href="assets/css/normalize.css" />
+    <link rel="stylesheet" type="text/css" href="assets/css/screen.css" />
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic|Open+Sans:700,400" />
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- fav and touch icons -->
+    <link rel="shortcut icon" href="assets/images/favicon.ico">
+
+	<!-- Syntax Highlighter stuff -->
+	<script type="text/javascript" src="scripts/shCore.js"></script>
+	<script type="text/javascript" src="src/brushes/powershell.js"></script>
+	<link type="text/css" rel="stylesheet" href="styles/shCoreMidnight.css"/>
+	<script type="text/javascript">SyntaxHighlighter.all();</script>
+	
+</head>
+<body>
+<main class="content" role="main">
+
+<header id="site-head2">
+    <div class="vertical">
+        <div id="site-head-content" class="inner">
+            <a id="blog-logo" href="http://tylerapplebaum.github.io/"><img src="assets/images/lgo.png" alt="Blog Logo" /></a>
+            <h1 class="blog-title">tylerapplebaum.ps1</h1>
+        </div>
+    </div>
+</header>
+
+<article class="postpage">
+    <header class="post-header">
+		<h1 class="post-title">NTDS.dit hash dumping!</h1>
+        <br/>
+         <span class="post-meta2"><img class='imgmeta' src='assets/images/lgo.png'></img><time>15 Aug 2014</time> 
+         </span>
+    </header>
+	
+<section class="post-content">
+
+<h1>Background</h1>
+<p>Password audits can be a tricky proposition. Many higher-ups need to sign off on the idea, possibly even board members. But you'll never know about that. One day, your boss will catch you walking by and tell you that you need to test the user's Active Directory passwords' strength.</p>
+<p>In this example, HandNet v2 needs to be installed on Windows 7. The setup.inx file for HandNet says that Adobe Reader 4.05 <b>must</b> be present. Good luck installing that! Instead of wasting my time trying to get a 15(!) year old version of Adobe Reader to install just to appease this setup procedure, I decided to tackle the logic instead.</p>
+<p>The interesting bits of HandNet's setup.inx file are located between offsets 0x000067A3 and 0x00007300. I patched the INX file so that the conditions to install Adobe Reader 4.05 would never be met, and the installation would continue on its way.</p>
+<p><a href="https://github.com/tylerapplebaum/Get-NTDSHashes">Github link to Get-NTDSHashes.ps1 and all relevant files</a></p>
+<p><img src="getntdshashes/p1yUtd0.png"></p>
+<p><img src="getntdshashes/V6s1BuP.png"></p>
+<p><img src="getntdshashes/6RkkGuS.png"></p>
+<p><iframe src="http://gfycat.com/ifr/HonorableSharpCuscus" frameborder="0" scrolling="no" width="600" height="338" style="-webkit-backface-visibility: hidden;-webkit-transform: scale(1);" ></iframe>
+    </section>
+        <footer class="post-footer">
+         <section class="author">
+                    <h4>Tyler Applebaum</h4>
+                </section>
+        </footer>
+</article>
+</main>
+
+<footer class="site-footer">
+        <div class="inner">
+             <section class="copyright">All content copyright <a href="/">tylerapplebaum.ps1</a> &copy; 2014 &bull; All rights reserved.</section>
+        </div>
+</footer>
+    <script type="text/javascript" src="/assets/js/jquery.fitvids.js"></script>
+    <script>
+        $(document).ready(function(){
+            // Target your .container, .wrapper, .post, etc.
+            $(".postpage").fitVids();
+        });
+    </script>
+
+</body>
+</html>
