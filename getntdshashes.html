@@ -49,14 +49,21 @@
 <section class="post-content">
 
 <h1>Background</h1>
-<p>Password audits can be a tricky proposition. Many higher-ups need to sign off on the idea, possibly even board members. But you'll never know about that. One day, your boss will catch you walking by and tell you that you need to test the user's Active Directory passwords' strength.</p>
-<p>In this example, HandNet v2 needs to be installed on Windows 7. The setup.inx file for HandNet says that Adobe Reader 4.05 <b>must</b> be present. Good luck installing that! Instead of wasting my time trying to get a 15(!) year old version of Adobe Reader to install just to appease this setup procedure, I decided to tackle the logic instead.</p>
-<p>The interesting bits of HandNet's setup.inx file are located between offsets 0x000067A3 and 0x00007300. I patched the INX file so that the conditions to install Adobe Reader 4.05 would never be met, and the installation would continue on its way.</p>
 <p><a href="https://github.com/tylerapplebaum/Get-NTDSHashes">Github link to Get-NTDSHashes.ps1 and all relevant files</a></p>
+
+<p>Password audits can be a tricky proposition. Many higher-ups need to sign off on the idea, possibly even board members. But you'll never know about that. One day, your boss will catch you walking by and tell you that you need to test the user's Active Directory passwords against dictionary attacks. First thought: my wordlist will finally get some use. Second thought: How exactly do I go about this?</p>
+<p>After some research, I found that <a href="http://www.room362.com/blog/2013/06/10/volume-shadow-copy-ntdsdit-domain-hashes-remotely-part-1/">mubix</a> had acconplished this. However, he finished up with Kali, and I wanted to stay Windows-native.</p>
+<p>I gathered up all of the tools I needed (Python, pycrypto, libesedb, and Invoke-NinjaCopy among other thing, and got to work. I knew I wanted a fully automated process. This meant checking for dependencies and <b>silently</b> installing them. Python is an MSI, no sweat. VC++ 2012 Redistrubutable? No problems there. Everything else? <b>Nightmare fuel!</b> Ok, not quite. Only the pycrypto installer needed to be silenced. I used EMCO MSI Package Builder to capture the .exe install and stuff it into an MSI. After some minor tweaks, that was working! Great place to stop for a beer.</p>
+<p>After the dependencies came the meat and potatoes. Copying the NTDS.dit and SYSTEM hive from a running DC, reading the NTDS database and getting something usable out of it was the real task.</p>
+<p>Enter <a href="https://code.google.com/p/libesedb/">libesedb</a>. Like I said, I wanted to stay Windows-native. This meant <a href="https://code.google.com/p/libesedb/wiki/Building#Using_Microsoft_Visual_Studio">building libesedb with Visual Studio</a> All I had at my disposal was VS 2012. I didn't have too many issues building this because it's so well written. Compiling this introduced the need for the VC++ 2012 Redistrubutable. A small price to pay! This allowed us to extract the tables from NTDS.dit.</p>
+<p><img src="getntdshashes/6RkkGuS.png"></p>
+<p>We're in pretty good shape now, so it's time to introduce <a href="http://www.ntdsxtract.com/">NTDSXtract</a>. The included python modules hadn't been tested on Windows at the time I attempted this project. Another first! As you may have guessed, they worked wonderfully. Hashes and account info extracted successfully.</p>
+<center><iframe src="http://gfycat.com/ifr/HonorableSharpCuscus" frameborder="0" scrolling="no" width="600" height="338" style="-webkit-backface-visibility: hidden;-webkit-transform: scale(1);" ></iframe></center>
+<p>This was the end of the script... for a moment. The extracted info is great, but it's in a messy format. Good thing we have <a href="http://ptscripts.googlecode.com/svn/trunk/dshashes.py">dshashes.py</a>. This puts the hashes in a nice <a href="http://hashcat.net/hashcat/">hashcat</a>-ready format.</p>
+<p>Gratuitous screenshots below</p>
 <p><img src="getntdshashes/p1yUtd0.png"></p>
 <p><img src="getntdshashes/V6s1BuP.png"></p>
-<p><img src="getntdshashes/6RkkGuS.png"></p>
-<center><iframe src="http://gfycat.com/ifr/HonorableSharpCuscus" frameborder="0" scrolling="no" width="600" height="338" style="-webkit-backface-visibility: hidden;-webkit-transform: scale(1);" ></iframe></center>
+
     </section>
         <footer class="post-footer">
          <section class="author">
